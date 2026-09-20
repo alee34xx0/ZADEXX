@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZaDex | Archivo Digital Personal</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              800: '#166534',
+              900: '#14532d',
+              950: '#052e16',
+            },
+            archive: {
+              bg: '#06141B',
+              card: '#11212D',
+              border: '#4A5C6A',
+              hover: '#253745',
+              gold: '#CCD0CF'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            serif: ['Georgia', 'Cambria', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+   
+ body {
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Custom Scrollbar for sleek archive feel */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #06141B;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #4A5C6A;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    .archive-gradient {
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%);
+    }
+
+    .badge-pill {
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col bg-cover bg-center bg-fixed text-slate-200 antialiased selection:bg-emerald-500 selection:text-slate-950" style="background-image: url('imagenes/fondo.gif');">
+  <!-- Top Bar / Header Branding -->
+  <header class="sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="filterByCategory('all')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center text-slate-950 font-bold text-xl shadow-lg shadow-emerald-950/40 border border-emerald-400/30">
+          <img src="imagenes/logo.png" alt="ZADEX" class="w-8 h-8 object-contain">
+        </div>
+        <div>
+          <h1 class="text-2xl font-black tracking-wider text-slate-100 flex items-center gap-2">
+            <span style="font-family: 'RoadRage', sans-serif;">ZADEX</span>
+            <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-blue-950/80 text-blue-400 border border-blue-800/50">Aportes</span>
+          </h1>
+          <a href="https://www.instagram.com/tw.zlex?stkn=bXFrN3I0NmZpb3Nv" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-900/80 border border-slate-700 text-slate-300 text-xs font-medium hover:bg-slate-800 hover:border-pink-500/60 hover:text-pink-400 transition duration-200">
+  <i class="fa-brands fa-instagram text-sm"></i>
+  Instagram
+</a>
+        </div>
+      </div>
+
+      <!-- Quick Action Stats -->
+      <div class="hidden sm:flex items-center gap-4 text-xs text-slate-400 border-l border-slate-800 pl-4">
+        <div><span class="text-slate-200 font-bold" id="stat-total-items">2</span> Aportes</div>
+        <div><span class="text-slate-200 font-bold">9</span> Categorías</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6 flex flex-col gap-8">
+
+    <!-- HERO / MANIFIESTO SITE DESCRIPTION -->
+    <section class="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/60 p-5 sm:p-7 shadow-xl backdrop-blur-sm">
+      <div class="absolute -right-16 -top-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="relative z-10 max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 text-blue-400 text-xs font-medium mb-3 border border-slate-700">
+          <i class="fa-solid fa-shield-halved"></i> Archivo Personal Público
+        </div>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3 leading-snug">
+          Bienvenido a ZaDex
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+          Este espacio nace para reunir y conservar los aportes que he ido compartiendo con el tiempo. Después de que el grupo anterior fue pausado, decidí traer aquí ese contenido para que no se perdiera y pudiera seguir estando disponible.
+ZADEX es, básicamente, un lugar propio para guardar todo eso que se ha ido acumulando: recomendaciones, recopilaciones, archivos y demás aportes, organizados por categorías para que sea más fácil encontrarlos y consultarlos. La idea es seguir agregando contenido poco a poco y dejar que este espacio crezca con el tiempo.
+
+        </p>
+        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed border-l-2 border-emerald-500/60 pl-3 italic">
+          Cada cierto tiempo ire actualizando el index, ya que hubieron aportes que no pude publicar por una u otra situacion, asi que espero poder crear mi biblioteca personal de aportes :).
+        </p>
+      </div>
+    </section>
+
+    <!-- CATEGORIES NAVIGATION BUTTONS (Mobile First Scrollable / Grid) -->
+    <section>
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-emerald-500"></i> Explorar Categorías
+        </h3>
+        <span class="text-xs text-slate-500" id="current-category-label">Todas las categorías</span>
+      </div>
+
+      <!-- Category Filter Pills Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5" id="categories-container">
+        <!-- Javascript will inject categories here -->
+      </div>
+    </section>
+
+    <!-- SEARCH AND FILTER TOOLBAR -->
+    <section class="flex flex-col sm:flex-row items-center gap-3 justify-between bg-slate-900/40 p-3 rounded-xl border border-slate-800/80">
+      <!-- Search Input -->
+      <div class="relative w-full sm:w-80">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+        <input 
+          type="text" 
+          id="search-input"
+          placeholder="Buscar por título, contenido, tema..." 
+          class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-8 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
+          oninput="handleSearch()"
+        >
+        <button id="clear-search" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Quick Filter Pills / Counter -->
+      <div class="flex items-center justify-between w-full sm:w-auto gap-3 text-xs text-slate-400">
+        <span id="results-count-badge" class="bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700/60 font-medium">
+          Mostrando <strong class="text-slate-200" id="items-count">0</strong> aportes
+        </span>
+        <button onclick="filterByCategory('all')" class="text-emerald-400 hover:underline flex items-center gap-1 font-medium text-xs">
+          <i class="fa-solid fa-rotate-left"></i> Restablecer
+        </button>
+      </div>
+    </section>
+
+    <!-- APORTES / ARCHIVE CARDS CONTAINER -->
+    <section id="content-section" class="min-h-[250px]">
+      <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Cards injected dynamically by JS -->
+      </div>
+
+      <!-- EMPTY STATE CONTAINER -->
+      <div id="empty-state" class="hidden flex-col items-center justify-center p-12 text-center bg-slate-900/30 rounded-2xl border border-dashed border-slate-800 my-4">
+        <div class="w-16 h-16 rounded-full bg-slate-800/80 flex items-center justify-center text-slate-500 text-2xl mb-4">
+          <i class="fa-solid fa-folder-open"></i>
+        </div>
+        <h4 class="text-base font-semibold text-slate-300 mb-1" id="empty-state-title">Esta sección todavía no tiene aportes.</h4>
+        <p class="text-xs sm:text-sm text-slate-500 max-w-md" id="empty-state-desc">Próximamente se agregarán nuevos contenidos a esta categoría del archivo.</p>
+        <button onclick="filterByCategory('all')" class="mt-5 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 transition">
+          Ver todas las categorías
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL / DETAIL VIEW -->
+  <div id="detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+    <div class="relative w-full max-w-3xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col">
+      
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-slate-800 flex items-start justify-between bg-slate-900/90 sticky top-0 z-10 backdrop-blur">
+        <div class="pr-6">
+          <div id="modal-categories" class="flex flex-wrap gap-2 mb-2">
+            <!-- Badges -->
+          </div>
+          <h2 id="modal-title" class="text-xl sm:text-2xl font-bold text-slate-100 leading-snug">
+            <!-- Title -->
+          </h2>
+          <p id="modal-subtitle" class="text-xs sm:text-sm text-emerald-400 font-medium mt-0.5">
+            <!-- Subtitle -->
+          </p>
+        </div>
+        <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-100 flex items-center justify-center transition flex-shrink-0">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-5 sm:p-6 overflow-y-auto flex-1 space-y-6 text-slate-300 text-sm" id="modal-body">
+        <!-- Content inserted dynamically -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-xs text-slate-500">
+        <span class="flex items-center gap-1.5">
+          <i class="fa-solid fa-database text-slate-600"></i> ZaDex Digital Archive
+        </span>
+        <button onclick="closeModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded-lg border border-slate-700">
+          Cerrar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="mt-12 border-t border-slate-800/80 bg-slate-950 py-8 px-4">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 text-center sm:text-left">
+      <div>
+        <p class="font-semibold text-slate-400 mb-1">ZaDex &mdash; Archivo Digital Personal</p>
+        <p>Un espacio propio e independiente para almacenar, conservar y consultar recopilaciones.</p>
+      </div>
+      <div class="flex flex-col items-center sm:items-end gap-1">
+        <span class="text-slate-400"><i class="fa-solid fa-code text-emerald-500/70 mr-1"></i> Formato de Archivo Público</span>
+        <span>Sin perfiles • Sin comentarios • Sin funciones sociales</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ==========================================================================
+       DATA ARCHITECTURE (ZADEX_CATEGORIES & ZADEX_DATA)
+       ========================================================================== */
+
+    const ZADEX_CATEGORIES = [
+  { id: 'all', name: 'Todos', icon: 'fa-border-all', count: 2 },
+  { id: 'libros', name: 'Libros', icon: 'fa-book-bookmark', emoji: '📚' },
+  { id: 'peliculas', name: 'Películas', icon: 'fa-film', emoji: '🎬' },
+  { id: 'series', name: 'Series', icon: 'fa-tv', emoji: '📺' },
+  { id: 'videojuegos', name: 'Videojuegos', icon: 'fa-gamepad', emoji: '🎮' },
+  { id: 'extras', name: 'Extras', icon: 'fa-wand-magic-sparkles', emoji: '✨' },
+];
+
+    const ZADEX_DATA = [
+      {
+        id: 'aporte-1-psicologia-salud-mental',
+        title: 'Recopilación | Psicología & Salud Mental',
+        subtitle: 'Colección de lectura personal y apoyo emocional',
+        categories: ['libros'],
+        type: 'PDF / Colección (39 libros)',
+        badgeColor: 'emerald',
+        description: 'Una colección de libros enfocados en el apoyo psicológico y emocional. Es una recopilación creada a partir de material que puede resultar útil para comprender mejor las emociones, las relaciones, el autoconocimiento y distintos aspectos relacionados con la salud mental.',
+        contextText: 'Esta colección nació a partir de una necesidad muy personal: en algún momento también tuve que buscar respuestas, intentar entender qué me estaba pasando y no tener muy claro por dónde empezar.\n\nPor eso decidí reunir este material y dejarlo disponible como recurso para quien pueda encontrarle utilidad.',
+        highlights: [
+          {
+            title: 'Mujeres que aman demasiado',
+            author: 'Robin Norwood',
+            description: 'Dependencia emocional, relaciones desequilibradas y cómo empezar a romper esos ciclos.'
+          },
+          {
+            title: 'Los afectos: Cómo aprender a manejarlos',
+            author: 'Ramiro A.',
+            description: 'Explica de forma clara cómo funcionan las emociones y cómo regularlas sin negarlas.'
+          },
+          {
+            title: 'Arregla tu desmadre',
+            author: 'Sarah Knight',
+            description: 'Psicología práctica para poner límites, ordenar prioridades y dejar de cargar con todo.'
+          },
+          {
+            title: 'Una vida sin salud mental',
+            author: 'González',
+            description: 'Reflexión directa sobre vivir con problemas de salud mental sin romantizarlos.'
+          },
+          {
+            title: 'El propósito del alma',
+            author: 'José Luis Cabouli',
+            description: 'Enfoque terapéutico sobre heridas emocionales profundas y procesos de sanación.'
+          }
+        ],
+        complementary: [
+          {
+            title: 'Cuadernos de reflexión emocional',
+            type: 'Recopilación',
+            detail: 'Textos extensos de análisis interno, ansiedad, culpa y reconstrucción personal.'
+          },
+          {
+            title: 'Psicología del conflicto interno',
+            type: 'Documento de apoyo',
+            detail: 'Material de lectura continua enfocado en pensamientos repetitivos, emociones intensas y autoconocimiento.'
+          }
+        ],
+        notes: [
+          'Es una recopilación, no contenido de mi autoría.',
+          'El material está en español.',
+          'Se respetan los títulos originales.',
+          'El contenido puede utilizarse como material de lectura, estudio o acompañamiento personal.',
+          'Cualquier recurso externo se enlazará únicamente cuando su distribución sea legítima o se cuente con autorización.'
+        ],
+        disclaimer: 'Este material tiene fines informativos, educativos y de lectura personal. No sustituye la atención profesional de salud mental.',
+        closingQuote: 'A veces leer ayuda, pero hablar también.',
+        downloadLinks: [
+  {
+    label: 'Consultar aporte',
+    url: 'https://qrgo.is/41656528'
+  }
+]
+      },
+      {
+        id: 'aporte-2-the-batman-el-pinguino',
+        title: 'The Batman (2022) + El Pingüino (2024)',
+        subtitle: 'Colección completa con continuidad narrativa',
+        categories: ['peliculas', 'series'],
+        type: 'Película 4K + Serie WEB-DL',
+        badgeColor: 'amber',
+        description: 'Una colección que reúne The Batman (2022) y la serie El Pingüino (2024), presentadas como una continuidad narrativa relacionada.',
+        continuityTimeline: [
+          { name: 'The Batman (2022)', detail: 'Película Principal' },
+          { name: 'Inundación de Gotham', detail: 'Evento Clave' },
+          { name: 'Una semana después', detail: 'Transición Temporal' },
+          { name: 'El Pingüino (2024)', detail: 'Serie de 8 Episodios' }
+        ],
+        specs: [
+          {
+            sectionTitle: 'The Batman (2022)',
+            icon: 'fa-film',
+            items: [
+              { label: 'Formato', value: 'MKV' },
+              { label: 'Códec', value: 'H.265 HEVC (10 Bits)' },
+              { label: 'Calidad', value: 'BRRip' },
+              { label: 'Resolución', value: '3840x2160p (4K UHD)' },
+              { label: 'Duración', value: '02:56:11' },
+              { label: 'Audio', value: 'Inglés y Español Latino' },
+              { label: 'Subtítulos', value: 'Español, Inglés y Forzados' },
+              { label: 'Peso Total', value: '4.29 GB' }
+            ]
+          },
+          {
+            sectionTitle: 'El Pingüino (2024)',
+            icon: 'fa-tv',
+            items: [
+              { label: 'Formato', value: 'MKV' },
+              { label: 'Códec', value: 'HEVC H.265 (10 Bits)' },
+              { label: 'Calidad', value: 'WEB-DL' },
+              { label: 'Resolución', value: '1920x960' },
+              { label: 'Episodios', value: '8 episodios completos' },
+              { label: 'Audio', value: 'Español Latino e Inglés Original' },
+              { label: 'Subtítulos', value: 'Completos en ambos idiomas + Forzados' },
+              { label: 'Peso por Episodio', value: '~690 MB – 870 MB' },
+              { label: 'Peso Total', value: '5.82 GB' }
+            ]
+          }
+        ],
+        downloadLinks: [
+  {
+    label: 'abrir enlace',
+    url: 'https://www.qrcodly.de/u/4vdeo'
+  }
+]
+      },
+      {
+        id: 'aporte-3-nirvana-discografia',
+        title: 'Nirvana',
+        subtitle: 'Discografía de estudio · 1989–1993',
+        categories: ['musica'],
+        type: 'FLAC / Hi-Res',
+        badgeColor: 'purple',
+
+        description: 'Una selección de los tres álbumes de estudio que definieron la trayectoria discográfica de Nirvana, presentada en versiones de alta resolución y organizada cronológicamente.',
+
+        albums: [
+          {
+            number: '01',
+            title: 'BLEACH',
+            year: '1989 · Deluxe Edition',
+            resolution: '24-bit / 96 kHz',
+            description: 'Primer álbum de estudio de Nirvana y punto de partida de una discografía que posteriormente marcaría una etapa fundamental del rock alternativo.'
+          },
+          {
+            number: '02',
+            title: 'NEVERMIND',
+            year: '1991 · Remastered 2021',
+            resolution: '24-bit / 192 kHz',
+            description: 'El segundo álbum de estudio de la banda, presentado en su edición remasterizada de 2021 y disponible en una resolución de 24-bit / 192 kHz. La remasterización fue realizada a partir de las cintas maestras analógicas originales.'
+          },
+          {
+            number: '03',
+            title: 'IN UTERO',
+            year: '1993',
+            resolution: '24-bit / 96 kHz',
+            description: 'Tercer y último álbum de estudio de Nirvana. La edición de alta resolución se encuentra disponible en 24-bit / 96 kHz; las reediciones de aniversario también utilizaron transferencias de las cintas maestras analógicas originales a 96 kHz / 24-bit.'
+          }
+        ],
+
+        specs: [
+          { label: 'Álbumes', value: '3' },
+          { label: 'Periodo', value: '1989–1993' },
+          { label: 'Formato', value: 'FLAC / Hi-Res' },
+          { label: 'Resoluciones', value: '24-bit / 96 kHz · 24-bit / 192 kHz' }
+        ],
+
+        downloadLinks: [
+          {
+            label: 'abrir enlace',
+            url: 'https://www.mediafire.com/folder/6kd4vi3sy0cqr/01.ESTUDIO'
+          }
+        ]
+      },
+{
+  id: 'aporte-4-metallica-discografia',
+  title: 'METALLICA',
+  subtitle: 'Discografía · 1983–2023',
+  categories: ['musica'],
+  type: 'FLAC Hi-Res',
+  badgeColor: 'amber',
+
+  description: 'Un recorrido cronológico por once álbumes de Metallica, presentado con sus respectivas ediciones y especificaciones de audio en alta resolución.',
+
+  albums: [
+    {
+      number: '01',
+      title: 'KILL ’EM ALL',
+      year: '1983 · Remastered',
+      resolution: '24-bit / 96 kHz',
+      description: 'Álbum debut de Metallica, presentado en una edición remasterizada en alta resolución.'
+    },
+    {
+      number: '02',
+      title: 'RIDE THE LIGHTNING',
+      year: '1984 · Remastered',
+      resolution: '24-bit / 96 kHz',
+      description: 'Segundo álbum de estudio de Metallica, presentado en una edición remasterizada en alta resolución.'
+    },
+    {
+      number: '03',
+      title: 'MASTER OF PUPPETS',
+      year: '1986 · Remastered',
+      resolution: '24-bit / 44.1 kHz',
+      description: 'Tercer álbum de estudio de Metallica, presentado en su edición remasterizada.'
+    },
+    {
+      number: '04',
+      title: '…AND JUSTICE FOR ALL',
+      year: '1988 · Remastered',
+      resolution: '24-bit / 96 kHz',
+      description: 'Cuarto álbum de estudio de Metallica, presentado en una edición remasterizada en alta resolución.'
+    },
+    {
+      number: '05',
+      title: 'METALLICA',
+      year: '1991 · Remastered 2021',
+      resolution: '24-bit / 96 kHz',
+      description: 'Quinto álbum de estudio de Metallica, presentado en su edición remasterizada de 2021.'
+    },
+    {
+      number: '06',
+      title: 'LOAD',
+      year: '1995',
+      resolution: '24-bit / 96 kHz',
+      description: 'Sexto álbum de estudio de Metallica, presentado en formato de alta resolución.'
+    },
+    {
+      number: '07',
+      title: 'RELOAD',
+      year: '1997',
+      resolution: '24-bit / 96 kHz',
+      description: 'Séptimo álbum de estudio de Metallica, presentado en formato de alta resolución.'
+    },
+    {
+      number: '08',
+      title: 'ST. ANGER',
+      year: '2003',
+      resolution: '24-bit / 88.2 kHz',
+      description: 'Octavo álbum de estudio de Metallica, presentado en formato de alta resolución.'
+    },
+    {
+      number: '09',
+      title: 'DEATH MAGNETIC',
+      year: '2008',
+      resolution: '24-bit / 96 kHz',
+      description: 'Noveno álbum de estudio de Metallica, presentado en formato de alta resolución.'
+    },
+    {
+      number: '10',
+      title: 'HARDWIRED…TO SELF-DESTRUCT',
+      year: '2016',
+      resolution: '24-bit / 44.1 kHz',
+      description: 'Décimo álbum de estudio de Metallica, presentado en formato de alta resolución.'
+    },
+    {
+      number: '11',
+      title: '72 SEASONS',
+      year: '2023',
+      resolution: '24-bit / 96 kHz',
+      description: 'Undécimo álbum de estudio de Metallica, presentado en formato de alta resolución.'
+    }
+  ],
+
+  specs: [
+    { label: 'Álbumes', value: '11' },
+    { label: 'Periodo', value: '1983–2023' },
+    { label: 'Formato', value: 'FLAC Hi-Res' },
+    { label: 'Resolución', value: '24-bit' },
+    { label: 'Frecuencias', value: '44.1 / 88.2 / 96 kHz' }
+  ],
+
+  downloadLinks: [
+    {
+      label: 'abrir enlace',
+      url: 'https://www.mediafire.com/folder/fxw1bhl5tpofh/35TUD10'
+    }
+  ]
+},
+{
+  id: 'aporte-5-the-weeknd-discografia',
+  title: 'THE WEEKND',
+  subtitle: 'Discografía · 2012–2022',
+  categories: ['musica'],
+  type: 'FLAC',
+  badgeColor: 'pink',
+
+  description: 'Una colección que recorre diez años de la trayectoria musical de The Weeknd, desde Trilogy hasta Dawn FM, mostrando la evolución de su sonido y sus diferentes etapas artísticas.',
+
+  albums: [
+    {
+      number: '01',
+      title: 'TRILOGY',
+      year: '2012',
+      detail: 'House of Balloons · Thursday · Echoes of Silence'
+    },
+    {
+      number: '02',
+      title: 'KISS LAND',
+      year: '2013'
+    },
+    {
+      number: '03',
+      title: 'BEAUTY BEHIND THE MADNESS',
+      year: '2015'
+    },
+    {
+      number: '04',
+      title: 'STARBOY',
+      year: '2016'
+    },
+    {
+      number: '05',
+      title: 'MY DEAR MELANCHOLY,',
+      year: '2018'
+    },
+    {
+      number: '06',
+      title: 'AFTER HOURS',
+      year: '2020'
+    },
+    {
+      number: '07',
+      title: 'DAWN FM',
+      year: '2022'
+    }
+  ],
+
+  specs: [
+    { label: 'Artista', value: 'The Weeknd' },
+    { label: 'Origen', value: 'Canadá' },
+    { label: 'Periodo', value: '2012–2022' },
+    { label: 'Géneros', value: 'R&B · Soul · Pop · Electrónica' },
+    { label: 'Formato', value: 'FLAC' },
+    { label: 'Bitrate', value: 'Variable · superior a 700 kbps' }
+  ],
+
+  descriptionExtra: 'La colección corresponde específicamente al periodo 2012–2022 y está organizada en FLAC.',
+
+  hurryUpTomorrow: {
+    title: 'HURRY UP TOMORROW',
+    year: '2025 · Complete Edition',
+    description: 'Esta edición reúne en un solo lanzamiento las diferentes versiones y contenidos adicionales de Hurry Up Tomorrow, incluyendo las 22 canciones de la versión digital, las 2 bonus de la edición 00XO, la colaboración con Swedish House Mafia en la edición de Pharrell Williams y la versión distinta de The Abyss presente en el primer disco físico.',
+    notes: [
+      'Africa, How It Feels y The Crowd corresponden a otros nombres de Give Me Mercy, Society y Without Warning presentes en los primeros lanzamientos físicos.',
+      'En esos primeros lanzamientos algunas canciones eran más cortas y también podía cambiar el orden debido a las transiciones.',
+      'Esta edición utiliza principalmente las versiones largas, excepto Take Me Back to LA, que conserva la transición hacia Niagara Falls.'
+    ]
+  },
+
+  downloadLinks: [
+    {
+      label: 'Discografía · 2012–2022',
+      url: 'https://www.mediafire.com/folder/se9tapuzcx8j1/The+Weeknd+FLAC'
+    },
+    {
+      label: 'Hurry Up Tomorrow · Complete Edition',
+      url: 'https://www.mediafire.com/file/ej1qwzao30g9ush/Hurry_Up_Tomorrow_%2528Complete_Edition%29.zip/file'
+    }
+  ]
+},
+    ];
+
+    /* ==========================================================================
+       STATE MANAGEMENT
+       ========================================================================== */
+    let currentCategory = 'all';
+    let searchQuery = '';
+
+    // Initialize application on DOM load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCategories();
+      renderContent();
+    });
+
+    // Render Category Filter Pills
+    function renderCategories() {
+      const container = document.getElementById('categories-container');
+      container.innerHTML = '';
+
+      ZADEX_CATEGORIES.forEach(cat => {
+        // Calculate count dynamically
+        let count = 0;
+        if (cat.id === 'all') {
+          count = ZADEX_DATA.length;
+        } else {
+          count = ZADEX_DATA.filter(item => item.categories.includes(cat.id)).length;
+        }
+
+        const isActive = currentCategory === cat.id;
+        
+        const btn = document.createElement('button');
+        btn.onclick = () => filterByCategory(cat.id);
+        btn.className = `flex items-center justify-between p-2.5 rounded-xl border text-xs sm:text-sm font-medium transition-all duration-200 text-left ${
+          isActive 
+            ? 'bg-emerald-950/80 border-emerald-500 text-emerald-300 shadow-md shadow-emerald-950/50' 
+            : 'bg-slate-900/80 border-slate-800/80 text-slate-300 hover:bg-slate-800 hover:border-slate-700'
+        }`;
+
+        btn.innerHTML = `
+          <div class="flex items-center gap-2 truncate">
+            <span class="text-base">${cat.emoji || '<i class="fa-solid ' + cat.icon + '"></i>'}</span>
+            <span class="truncate">${cat.name}</span>
+          </div>
+          <span class="ml-1.5 px-1.5 py-0.5 text-[10px] rounded-full ${
+            count > 0 
+              ? (isActive ? 'bg-emerald-800/60 text-emerald-200' : 'bg-slate-800 text-slate-400')
+              : 'bg-slate-950/50 text-slate-600'
+          }">${count}</span>
+        `;
+
+        container.appendChild(btn);
+      });
+
+      // Update current category label
+      const activeCatObj = ZADEX_CATEGORIES.find(c => c.id === currentCategory);
+      document.getElementById('current-category-label').textContent = activeCatObj 
+        ? `Categoría: ${activeCatObj.name}` 
+        : 'Todas las categorías';
+    }
+
+    // Filter by category
+    function filterByCategory(catId) {
+      currentCategory = catId;
+      renderCategories();
+      renderContent();
+    }
+
+    // Search query handler
+    function handleSearch() {
+      const input = document.getElementById('search-input');
+      const clearBtn = document.getElementById('clear-search');
+      searchQuery = input.value.trim().toLowerCase();
+
+      if (searchQuery.length > 0) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+
+      renderContent();
+    }
+
+    function clearSearch() {
+      document.getElementById('search-input').value = '';
+      searchQuery = '';
+      document.getElementById('clear-search').classList.add('hidden');
+      renderContent();
+    }
+
+    // Render Cards or Empty State
+    function renderContent() {
+      const grid = document.getElementById('cards-grid');
+      const emptyState = document.getElementById('empty-state');
+      const countEl = document.getElementById('items-count');
+
+      grid.innerHTML = '';
+
+      // Filter dataset based on category & search query
+      const filteredData = ZADEX_DATA.filter(item => {
+        const matchesCategory = currentCategory === 'all' || item.categories.includes(currentCategory);
+        
+        let matchesSearch = true;
+        if (searchQuery) {
+          const searchInTitle = item.title.toLowerCase().includes(searchQuery);
+          const searchInDesc = item.description.toLowerCase().includes(searchQuery);
+          const searchInSub = item.subtitle ? item.subtitle.toLowerCase().includes(searchQuery) : false;
+          matchesSearch = searchInTitle || searchInDesc || searchInSub;
+        }
+
+        return matchesCategory && matchesSearch;
+      });
+
+      countEl.textContent = filteredData.length;
+
+      if (filteredData.length === 0) {
+        grid.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        emptyState.classList.add('flex');
+
+        // Dynamic empty state text
+        const activeCat = ZADEX_CATEGORIES.find(c => c.id === currentCategory);
+        if (searchQuery) {
+          document.getElementById('empty-state-title').textContent = 'No se encontraron resultados';
+          document.getElementById('empty-state-desc').textContent = `No hay aportes que coincidan con "${searchQuery}". Prueba con otro término de búsqueda.`;
+        } else if (activeCat && activeCat.id !== 'all') {
+          document.getElementById('empty-state-title').textContent = `Categoría ${activeCat.name} vacía`;
+          document.getElementById('empty-state-desc').textContent = 'Esta sección todavía no tiene aportes. Próximamente se agregarán nuevos contenidos.';
+        } else {
+          document.getElementById('empty-state-title').textContent = 'Esta sección todavía no tiene aportes.';
+          document.getElementById('empty-state-desc').textContent = 'Próximamente se agregarán nuevos contenidos.';
+        }
+        return;
+      }
+
+      grid.classList.remove('hidden');
+      emptyState.classList.add('hidden');
+      emptyState.classList.remove('flex');
+
+      filteredData.forEach(item => {
+        const card = document.createElement('article');
+        card.className = "bg-cover bg-center border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col justify-between hover:border-slate-700 transition duration-200 relative group";
+
+if (item.id === 'aporte-1-psicologia-salud-mental') {
+  card.style.backgroundImage = "url('imagenes/aporte1.jpg')";
+}
+
+if (item.id === 'aporte-2-the-batman-el-pinguino') {
+  card.style.backgroundImage = "url('imagenes/aporte2.jpg')";
+}
+
+if (item.id === 'aporte-3-nirvana-discografia') {
+  card.style.backgroundImage = "url('imagenes/nirvana.jpg')";
+}
+
+if (item.id === 'aporte-4-metallica-discografia') {
+  card.style.backgroundImage = "url('imagenes/metallica.jpg')";
+}
+
+if (item.id === 'aporte-5-the-weeknd-discografia') {
+  card.style.backgroundImage = "url('imagenes/weeknd.jpg')";
+}
+
+        // Category Pills UI
+        const categoryPillsHTML = item.categories.map(catKey => {
+          const catObj = ZADEX_CATEGORIES.find(c => c.id === catKey);
+          return `<span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 border border-slate-700/60">
+            ${catObj ? catObj.emoji || '' : ''} ${catObj ? catObj.name : catKey}
+          </span>`;
+        }).join(' ');
+
+        // Visual layout per card type
+        let extraContentPreviewHTML = '';
+        
+        if (item.id === 'aporte-1-psicologia-salud-mental') {
+          extraContentPreviewHTML = `
+            <div class="my-4 p-3.5 rounded-xl bg-slate-950/70 border border-slate-800/80 space-y-2">
+              <div class="text-xs font-semibold text-red-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                <i class="fa-solid fa-star text-[10px]"></i> Destacados del aporte (${item.highlights.length} libros)
+              </div>
+              <ul class="text-xs text-slate-300 space-y-1.5">
+                ${item.highlights.slice(0, 3).map(h => `<li class="flex items-start gap-1.5"><span class="text-blue-500 font-bold">•</span> <span><strong>${h.title}</strong> &mdash; ${h.author}</span></li>`).join('')}
+              </ul>
+            </div>
+          `;
+        } else if (item.id === 'aporte-2-the-batman-el-pinguino') {
+          extraContentPreviewHTML = `
+            <div class="my-4 p-3.5 rounded-xl bg-slate-950/70 border border-slate-800/80">
+              <div class="text-xs font-semibold text-amber-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                <i class="fa-solid fa-timeline text-[10px]"></i> Continuidad Narrativa
+              </div>
+              <div class="flex items-center gap-1.5 text-[11px] text-slate-300 overflow-x-auto pb-1">
+                <span class="bg-slate-800 px-2 py-1 rounded border border-slate-700 font-medium whitespace-nowrap">The Batman (2022)</span>
+                <i class="fa-solid fa-arrow-right text-[10px] text-slate-500"></i>
+                <span class="bg-slate-800 px-2 py-1 rounded border border-slate-700 text-slate-400 whitespace-nowrap">Inundación</span>
+                <i class="fa-solid fa-arrow-right text-[10px] text-slate-500"></i>
+                <span class="bg-red-950/60 border border-red-800/60 text-red-300 px-2 py-1 rounded font-medium whitespace-nowrap">El Pingüino (2024)</span>
+              </div>
+            </div>
+          `;
+        } else if (item.id === 'aporte-4-metallica-discografia') {
+  extraContentPreviewHTML = `
+    <div class="my-4 p-3.5 rounded-xl bg-slate-950/70 border border-amber-900/40 space-y-2.5">
+
+      <div class="flex items-center justify-between gap-2">
+        <div class="text-xs font-semibold text-amber-400 uppercase tracking-wide flex items-center gap-1.5">
+          <i class="fa-solid fa-compact-disc text-[10px]"></i>
+          Discografía · 1983–2023
+        </div>
+
+        <span class="text-[10px] text-slate-500 font-medium">
+          11 álbumes
+        </span>
+      </div>
+
+      <div class="flex flex-wrap gap-1.5">
+        ${item.albums.slice(0, 4).map(album => `
+          <span class="text-[10px] text-slate-300 bg-slate-900/80 border border-slate-800 px-2 py-1 rounded">
+            ${album.title}
+          </span>
+        `).join('')}
+
+        <span class="text-[10px] text-amber-400 bg-amber-950/40 border border-amber-900/40 px-2 py-1 rounded">
+          +7 más
+        </span>
+      </div>
+
+      <div class="pt-2 border-t border-slate-800">
+        <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/50">
+          FLAC Hi-Res · 24-bit
+        </span>
+      </div>
+
+    </div>
+  `;
+} else if (item.id === 'aporte-5-the-weeknd-discografia') {
+  extraContentPreviewHTML = `
+    <div class="my-4 p-3.5 rounded-xl bg-slate-950/70 border border-pink-900/40 space-y-2.5">
+
+      <div class="flex items-center justify-between gap-2">
+        <div class="text-xs font-semibold text-pink-400 uppercase tracking-wide flex items-center gap-1.5">
+          <i class="fa-solid fa-compact-disc text-[10px]"></i>
+          Discografía · 2012–2022
+        </div>
+
+        <span class="text-[10px] text-slate-500 font-medium">
+          7 lanzamientos
+        </span>
+      </div>
+
+      <div class="flex flex-wrap gap-1.5">
+        ${item.albums.slice(0, 4).map(album => `
+          <span class="text-[10px] text-slate-300 bg-slate-900/80 border border-slate-800 px-2 py-1 rounded">
+            ${album.title}
+          </span>
+        `).join('')}
+
+        <span class="text-[10px] text-pink-400 bg-pink-950/40 border border-pink-900/40 px-2 py-1 rounded">
+          +3 más
+        </span>
+      </div>
+
+      <div class="pt-2 border-t border-slate-800 flex items-center justify-between gap-2">
+        <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-pink-950/60 text-pink-300 border border-pink-800/50">
+          FLAC
+        </span>
+
+        <span class="text-[10px] text-slate-500">
+          + Hurry Up Tomorrow
+        </span>
+      </div>
+
+    </div>
+  `;
+}
+
+const isPsychology = item.id === 'aporte-1-psicologia-salud-mental';
+const isBatman = item.id === 'aporte-2-the-batman-el-pinguino';
+const isNirvana = item.id === 'aporte-3-nirvana-discografia';
+const isMetallica = item.id === 'aporte-4-metallica-discografia';
+const isWeeknd = item.id === 'aporte-5-the-weeknd-discografia';
+
+const titleAccent = isPsychology
+  ? 'group-hover:text-blue-400'
+  : isBatman
+    ? 'group-hover:text-red-400'
+    : isNirvana
+      ? 'group-hover:text-purple-400'
+      : isMetallica
+        ? 'group-hover:text-amber-400'
+        : isWeeknd
+          ? 'group-hover:text-pink-400'
+          : 'group-hover:text-red-400';
+
+const buttonAccent = isPsychology
+  ? 'bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-950/50'
+  : isBatman
+    ? 'bg-red-600 hover:bg-red-500 shadow-md shadow-red-950/50'
+    : isNirvana
+      ? 'bg-purple-600 hover:bg-purple-500 shadow-md shadow-purple-950/50'
+      : isMetallica
+        ? 'bg-amber-600 hover:bg-amber-500 shadow-md shadow-amber-950/50'
+        : isWeeknd
+          ? 'bg-pink-600 hover:bg-pink-500 shadow-md shadow-pink-950/50'
+          : 'bg-red-600 hover:bg-red-500 shadow-md shadow-red-950/50';
+
+        card.innerHTML = `
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div class="flex flex-wrap gap-1.5">
+                ${categoryPillsHTML}
+              </div>
+              <span class="text-[11px] font-mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">
+                ${item.type}
+              </span>
+            </div>
+
+            <h3 class="text-lg sm:text-xl font-bold ${isNirvana ? 'text-purple-300' : isMetallica ? 'text-amber-300' : 'text-slate-100'} ${titleAccent} transition mb-1 leading-snug">
+              ${item.title}
+            </h3>
+            ${item.subtitle ? `<p class="text-xs ${isNirvana ? 'text-purple-200' : isMetallica ? 'text-amber-200' : isWeeknd ? 'text-pink-200' : 'text-slate-400'} font-medium mb-3">${item.subtitle}</p>` : ''}
+
+<p class="${isNirvana || isMetallica || isWeeknd ? 'text-slate-100' : 'text-slate-300'} text-xs sm:text-sm leading-relaxed line-clamp-3 mb-3">
+  ${item.description}
+</p>
+
+            ${extraContentPreviewHTML}
+          </div>
+
+          <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between mt-2">
+            <span class="text-xs text-slate-500 flex items-center gap-1">
+              <i class="fa-regular fa-folder text-slate-600"></i> Aporte Oficial
+            </span>
+            <button 
+              onclick="openModal('${item.id}')"
+             class="px-4 py-2 rounded-xl ${buttonAccent} text-slate-950 font-semibold text-xs transition flex items-center gap-1.5"
+            >
+              <span>Consultar aporte</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    // Open Modal with detail data
+    function openModal(itemId) {
+      const item = ZADEX_DATA.find(i => i.id === itemId);
+      if (!item) return;
+
+      const modal = document.getElementById('detail-modal');
+      const categoriesContainer = document.getElementById('modal-categories');
+      const titleEl = document.getElementById('modal-title');
+      const subtitleEl = document.getElementById('modal-subtitle');
+      const bodyEl = document.getElementById('modal-body');
+
+      // Populate Categories Badges
+      categoriesContainer.innerHTML = item.categories.map(catKey => {
+        const catObj = ZADEX_CATEGORIES.find(c => c.id === catKey);
+        return `<span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-800 text-slate-200 border border-slate-700">
+          ${catObj ? catObj.emoji || '' : ''} ${catObj ? catObj.name : catKey}
+        </span>`;
+      }).join(' ');
+
+      titleEl.textContent = item.title;
+      subtitleEl.textContent = item.subtitle || item.type;
+
+      // Build Body HTML
+      let html = '';
+
+      // General Description
+      html += `
+        <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-emerald-400"></i> Descripción del Aporte
+          </h4>
+          <p class="text-slate-200 leading-relaxed text-sm">${item.description}</p>
+        </div>
+      `;
+
+      // Context text if available (Aporte 1)
+      if (item.contextText) {
+        html += `
+          <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/80 italic text-slate-300 text-xs sm:text-sm leading-relaxed border-l-4 border-l-emerald-500">
+            <h4 class="not-italic font-bold text-xs text-emerald-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+              <i class="fa-solid fa-quote-left"></i> Contexto del Aporte
+            </h4>
+            ${item.contextText.split('\n\n').map(p => `<p class="mb-2 last:mb-0">${p}</p>`).join('')}
+          </div>
+        `;
+      }
+
+      // Highlights / Books List
+      if (item.highlights && item.highlights.length > 0) {
+        html += `
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-book-open text-emerald-400"></i> Material Destacado Incluido
+            </h4>
+            <div class="space-y-2.5">
+              ${item.highlights.map(h => `
+                <div class="p-3 bg-slate-950/80 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4">
+                  <div>
+                    <h5 class="font-bold text-slate-100 text-sm">📖 ${h.title}</h5>
+                    <p class="text-xs text-slate-400 font-medium">Autor: ${h.author}</p>
+                    <p class="text-xs text-slate-300 mt-1">${h.description}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // Complementary Materials (Aporte 1)
+      if (item.complementary && item.complementary.length > 0) {
+        html += `
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-folder-plus text-emerald-400"></i> Material Complementario
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              ${item.complementary.map(c => `
+                <div class="p-3 bg-slate-950/80 rounded-xl border border-slate-800">
+                  <div class="text-xs font-bold text-amber-400 mb-1 flex items-center gap-1">
+                    🎈 ${c.title}
+                  </div>
+                  <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">${c.type}</span>
+                  <p class="text-xs text-slate-300 mt-2">${c.detail}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // Timeline Continuity (Aporte 2)
+      if (item.continuityTimeline) {
+        html += `
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-timeline text-amber-400"></i> Continuidad Narrativa
+            </h4>
+            <div class="p-4 bg-slate-950/80 rounded-xl border border-slate-800">
+              <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 relative">
+                ${item.continuityTimeline.map((step, idx) => `
+                  <div class="flex-1 bg-slate-900 p-3 rounded-lg border border-slate-800 text-center relative z-10">
+                    <span class="text-[10px] text-emerald-400 font-mono">Paso ${idx + 1}</span>
+                    <h5 class="font-bold text-slate-100 text-xs mt-0.5">${step.name}</h5>
+                    <p class="text-[11px] text-slate-400 mt-0.5">${step.detail}</p>
+                  </div>
+                  ${idx < item.continuityTimeline.length - 1 ? `
+                    <div class="hidden md:flex items-center text-slate-600">
+                      <i class="fa-solid fa-chevron-right text-xs"></i>
+                    </div>
+                    <div class="flex md:hidden justify-center text-slate-600 my-0.5">
+                      <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </div>
+                  ` : ''}
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Specs Technical Section (Aporte 2)
+      if (item.id === 'aporte-2-the-batman-el-pinguino' && item.specs) {
+        html += `
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-emerald-400"></i> Especificaciones Técnicas
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              ${item.specs.map(spec => `
+                <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                  <h5 class="font-bold text-slate-100 text-sm border-b border-slate-800 pb-2 flex items-center gap-2">
+                    <i class="fa-solid ${spec.icon} text-amber-400"></i> ${spec.sectionTitle}
+                  </h5>
+                  <dl class="grid grid-cols-1 gap-1.5 text-xs pt-1">
+                    ${spec.items.map(i => `
+                      <div class="flex justify-between border-b border-slate-900/60 pb-1">
+                        <dt class="text-slate-400">${i.label}:</dt>
+                        <dd class="text-slate-200 font-medium text-right">${i.value}</dd>
+                      </div>
+                    `).join('')}
+                  </dl>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // Specs de Nirvana
+      if (item.id === 'aporte-3-nirvana-discografia' && item.specs) {
+        html += `
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-purple-400"></i> Especificaciones
+            </h4>
+
+            <div class="p-4 bg-slate-950/80 rounded-xl border border-purple-900/40">
+              <dl class="space-y-2">
+                ${item.specs.map(spec => `
+                  <div class="flex items-start justify-between gap-4 border-b border-slate-900/70 pb-2 last:border-0 last:pb-0">
+                    <dt class="text-xs text-slate-400">
+                      ${spec.label}
+                    </dt>
+
+                    <dd class="text-xs text-purple-300 font-semibold text-right">
+                      ${spec.value}
+                    </dd>
+                  </div>
+                `).join('')}
+              </dl>
+            </div>
+          </div>
+        `;
+      }
+
+      // Specs de The Weeknd
+      if (item.id === 'aporte-5-the-weeknd-discografia' && item.specs) {
+        html += `
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-pink-400"></i> Especificaciones
+            </h4>
+
+            <div class="p-4 bg-slate-950/80 rounded-xl border border-pink-900/40">
+              <dl class="space-y-2">
+                ${item.specs.map(spec => `
+                  <div class="flex items-start justify-between gap-4 border-b border-slate-900/70 pb-2 last:border-0 last:pb-0">
+                    <dt class="text-xs text-slate-400">
+                      ${spec.label}
+                    </dt>
+
+                    <dd class="text-xs text-pink-300 font-semibold text-right">
+                      ${spec.value}
+                    </dd>
+                  </div>
+                `).join('')}
+              </dl>
+            </div>
+          </div>
+        `;
+      }
+
+      // Discografía de The Weeknd
+      if (item.id === 'aporte-5-the-weeknd-discografia' && item.albums) {
+        html += `
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-compact-disc text-pink-400"></i> Recorrido Discográfico
+            </h4>
+
+            <div class="space-y-3">
+              ${item.albums.map(album => `
+                <div class="p-4 bg-slate-950/80 rounded-xl border border-pink-900/40">
+
+                  <div class="flex items-start gap-3">
+
+                    <div class="shrink-0 w-8 h-8 rounded-lg bg-pink-950/60 border border-pink-800/50 flex items-center justify-center">
+                      <span class="text-[11px] font-bold text-pink-400">
+                        ${album.number}
+                      </span>
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+
+                      <h5 class="text-sm font-bold text-slate-100">
+                        ${album.title}
+                      </h5>
+
+                      <div class="flex flex-wrap items-center gap-2 mt-1">
+                        <span class="text-[11px] text-slate-400">
+                          ${album.year}
+                        </span>
+                      </div>
+
+                      ${
+                        album.detail
+                          ? `
+                            <p class="text-xs text-pink-200 leading-relaxed mt-2">
+                              ${album.detail}
+                            </p>
+                          `
+                          : ''
+                      }
+
+                    </div>
+
+                  </div>
+
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // Edición especial: Hurry Up Tomorrow
+      if (item.id === 'aporte-5-the-weeknd-discografia' && item.hurryUpTomorrow) {
+        html += `
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-star text-pink-400"></i> Edición especial
+            </h4>
+
+            <div class="p-4 bg-slate-950/80 rounded-xl border border-pink-900/40">
+
+              <div class="flex items-start gap-3">
+
+                <div class="shrink-0 w-8 h-8 rounded-lg bg-pink-950/60 border border-pink-800/50 flex items-center justify-center">
+                  <i class="fa-solid fa-compact-disc text-pink-400 text-sm"></i>
+                </div>
+
+                <div class="flex-1 min-w-0">
+
+                  <h5 class="text-sm font-bold text-slate-100">
+                    ${item.hurryUpTomorrow.title}
+                  </h5>
+
+                  <span class="inline-block text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-pink-950/60 text-pink-300 border border-pink-800/50 mt-1">
+                    ${item.hurryUpTomorrow.year}
+                  </span>
+
+                  <p class="text-xs text-slate-300 leading-relaxed mt-3">
+                    ${item.hurryUpTomorrow.description}
+                  </p>
+
+                  <div class="mt-3 pt-3 border-t border-slate-800 space-y-2">
+
+                    <div class="text-[10px] uppercase font-semibold text-pink-400 tracking-wide">
+                      Notas sobre las versiones
+                    </div>
+
+                    ${item.hurryUpTomorrow.notes.map(note => `
+                      <div class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-info text-pink-500 text-[9px] mt-1"></i>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">
+                          ${note}
+                        </p>
+                      </div>
+                    `).join('')}
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        `;
+      }
+
+      // Notes & Disclaimers (Aporte 1)
+      if (item.notes) {
+        html += `
+          <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800 space-y-2 text-xs">
+            <h5 class="font-bold text-slate-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-clipboard-list text-slate-400"></i> Notas del Archivo
+            </h5>
+            <ul class="list-disc list-inside text-slate-400 space-y-1 pl-1">
+              ${item.notes.map(n => `<li>${n}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+
+      if (item.disclaimer) {
+        html += `
+          <div class="p-3 bg-amber-950/30 border border-amber-800/40 rounded-xl text-xs text-amber-200/90 flex items-start gap-2.5">
+            <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm mt-0.5"></i>
+            <div>
+              <strong>Aviso informativo:</strong> ${item.disclaimer}
+            </div>
+          </div>
+        `;
+      }
+
+      if (item.closingQuote) {
+        html += `
+          <div class="text-center py-2 text-blue-400 italic font-serif text-sm border-t border-slate-800">
+            "${item.closingQuote}"
+          </div>
+        `;
+      }
+
+      // Download / Resource Area
+html += `
+  <div class="pt-2">
+    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+      <i class="fa-solid fa-download text-blue-400"></i> Recurso / Archivos
+    </h4>
+
+    <div class="p-4 bg-slate-950 rounded-xl border border-slate-700 text-center">
+      ${
+        item.downloadLinks && item.downloadLinks.length > 0
+          ? item.downloadLinks.map(link => `
+              <a 
+                href="${link.url}" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg ${
+  item.id === 'aporte-1-psicologia-salud-mental'
+    ? 'bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-950/50'
+    : item.id === 'aporte-2-the-batman-el-pinguino'
+      ? 'bg-red-600 hover:bg-red-500 shadow-md shadow-red-950/50'
+      : item.id === 'aporte-3-nirvana-discografia'
+        ? 'bg-purple-600 hover:bg-purple-500 shadow-md shadow-purple-950/50'
+        : item.id === 'aporte-4-metallica-discografia'
+          ? 'bg-amber-600 hover:bg-amber-500 shadow-md shadow-amber-950/50'
+          : item.id === 'aporte-5-the-weeknd-discografia'
+            ? 'bg-pink-600 hover:bg-pink-500 shadow-md shadow-pink-950/50'
+            : 'bg-red-600 hover:bg-red-500 shadow-md shadow-red-950/50'
+} text-slate-950 font-semibold text-xs transition"
+              >
+                <i class="fa-solid fa-link"></i>
+                ${link.label}
+              </a>
+
+              ${
+                item.id === 'aporte-3-nirvana-discografia'
+                  ? `
+                    <div class="mt-3 pt-3 border-t border-slate-800">
+                      <div class="text-[10px] uppercase font-semibold text-purple-400 tracking-wide mb-1">
+                        <i class="fa-solid fa-key mr-1"></i> Contraseña de los archivos
+                      </div>
+                      <div class="inline-flex items-center px-3 py-1.5 rounded-lg bg-purple-950/50 border border-purple-800/50">
+                        <code class="text-xs font-bold text-purple-300 tracking-wide">IDENTI.IO</code>
+                      </div>
+                    </div>
+                  `
+                  : ''
+              }
+            `).join('')
+          : `
+              <span class="text-xs text-slate-400 font-medium flex items-center justify-center gap-2">
+                <i class="fa-solid fa-link text-slate-500"></i>
+                Enlace próximamente
+              </span>
+            `
+      }
+    </div>
+  </div>
+`;
+
+      bodyEl.innerHTML = html;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('detail-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    // Close modal on escape key or backdrop click
+    document.getElementById('detail-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'detail-modal') {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
